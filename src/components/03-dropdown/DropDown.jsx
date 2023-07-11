@@ -1,93 +1,66 @@
-import React, { useState } from 'react'
-import Box from '@mui/material/Box';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
-
+import React, { useEffect, useState } from 'react';
 
 const countries = [
-    {
-        name:'india',
-        value: 'IND',
-        states :[
-            'delhi',
-            'kolkata',
-            'mumbai',
-        ]
-    },
-    {
-        name:'pakistan',
-        value: 'PAK',
-        states :[
-            'lahore',
-            'karachi',
-        ]
-    },
-    {
-        name:'australia',
-        value: 'AUS',
-        states :[
-            'sydeny',
-            'melbern',
-            'perth',
-        ]
-    },
+  {
+    name: 'india',
+    value: 'IND',
+    states: ['delhi', 'kolkata', 'mumbai']
+  },
+  {
+    name: 'pakistan',
+    value: 'PAK',
+    states: ['lahore', 'karachi']
+  },
+  {
+    name: 'australia',
+    value: 'AUS',
+    states: ['sydney', 'melbourne', 'perth']
+  }
 ];
 
-
-const DropDown = () => {
-  const [selectedCountry, setSelectedCountry] = useState('');
+function CountryList() {
+  const [selectedCountry, setSelectedCountry] = useState('IND');
+  const [selectedStates, setSelectedStates] = useState(countries[0].states);
 
   const handleCountryChange = (event) => {
-    setSelectedCountry(event.target.value);
-  };
+    const selectedCountryValue = event.target.value;
+    const country = countries.find((c) => c.value === selectedCountryValue);
 
-  const [selectedAge, setSelectedAge] = useState('');
+    console.log(country);
 
-  const handleAgeChange = (event) => {
-    setSelectedAge(event.target.value);
-  };
+    setSelectedCountry(selectedCountryValue);
+    setSelectedStates(country ? country.states : []);
+  }
+
 
   return (
-    <div className='container mt-5'>
-    <Box sx={{ minWidth: 120 }}>
-      <FormControl style={{width: '180px', marginRight:'20px'}}>
-        <InputLabel id="country-select-label">Countries</InputLabel>
-        <Select
-          labelId="country-select-label"
-          id="country-select"
-          value={selectedCountry}
-          label="Countries"
-          onChange={handleCountryChange}
-        >
-        {
-            countries.map((country) => (
-                <MenuItem key={country.value} value={country.value}>{country.name}</MenuItem>
-            ))
-        }
-        </Select>
-      </FormControl>
-
-      <FormControl style={{width: '180px'}}>
-        <InputLabel id="age-select-label">Age</InputLabel>
-        <Select
-          labelId="age-select-label"
-          id="age-select"
-          value={selectedAge}
-          label="Age"
-          onChange={handleAgeChange}
-        >
-         {
-            countries.map((country) => (
-                <MenuItem key={country.value} value={country.value}>{country.name}</MenuItem>
-            ))
-        }
-        </Select>
-      </FormControl>
-    </Box>
+    <div>
+      <h1>List of Countries</h1>
+      <div>
+        <label>Select Country:</label>
+        <select value={selectedCountry} onChange={handleCountryChange}>
+          <option value="">Select</option>
+          {countries.map((country, index) => (
+            <option key={index} value={country.value}>
+              {country.name}
+            </option>
+          ))}
+        </select>
+      </div>
+      { 
+        <div>
+          <label>Select State:</label>
+          <select>
+            {selectedStates.map((state, index) => (
+              <option key={index} value={state}>
+                {state}
+              </option>
+            ))}
+          </select>
+        </div>
+      }
     </div>
   );
 }
 
-export default DropDown;
+export default CountryList;
